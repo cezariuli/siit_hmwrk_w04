@@ -18,9 +18,9 @@ public abstract class Car implements Vehicle {
     private Boolean isCarStarted = false;
     private Boolean isCarStopped = false;
 
-    private Float   currentConsumption;
-    private Double   currentDrivenKm;
-    private Integer    currentGear;
+    private Float       currentConsumption; //consumption of fuel during current driving cycle;
+    private Float       currentDrivenKm;    //total driven Kms of current driving cycle;
+    private Integer     currentGear;
 
     //define Constructor
     public Car(Integer fuelTankSize, String fuelType, Integer gears, Float consumptionPer100Km) {
@@ -29,6 +29,12 @@ public abstract class Car implements Vehicle {
         this.gears = gears;
         this.consumptionPer100Km = consumptionPer100Km;
     }
+
+    //declare abstract methods;
+
+    public abstract Float getAvailableFuel();
+
+    public abstract Float getAverageFuelConsumption();
 
     //define setters and getters;
 
@@ -52,12 +58,24 @@ public abstract class Car implements Vehicle {
         return this.gears;
     }
 
-    public void setCurrentDrivenKm(Double kms) {
+    public void setCurrentDrivenKm(Float kms) {
         this.currentDrivenKm = kms;
     }
 
-    public Double getCurrentDrivenKm() {
+    public Float getCurrentDrivenKm() {
         return this.currentDrivenKm;
+    }
+
+    public Float getConsumptionPer100Km() {
+        return this.consumptionPer100Km;
+    }
+
+    public void setCurrentConsumption(Float consumption) {
+        this.currentConsumption += consumption;
+    }
+
+    public Float getCurrentConsumption() {
+        return this.currentConsumption;
     }
 
     //define behaviors
@@ -84,13 +102,22 @@ public abstract class Car implements Vehicle {
             isCarStopped = false;
 
             currentConsumption = (float) 0.0;
+            currentDrivenKm = (float) 0.0;
             System.out.println("Car is started. Consumption stats are reset");
         }
     }
 
     @Override
-    public void drive(double kms){
-        setCurrentDrivenKm(kms);
+    public void drive(float kms){
+        if (isCarStarted) {
+            Float distance = getCurrentDrivenKm();
+            distance += kms;
+            //update the total distance driven in current driving cycle
+            setCurrentDrivenKm(distance);
+            //calculate fuel consumption for the distance driven in current gear
+            calculateConsumption(kms);
+        }
+        else System.out.println("Cannot drive, car is stopped");
     }
 
     @Override
@@ -100,11 +127,19 @@ public abstract class Car implements Vehicle {
         System.out.println("The car is stopped");
     }
 
-    public Float getAvailableFuel() {
-        return (float) 0.0;
+    public void calculateConsumption(double kms) {
+        double tmpCurrentGear = getCurrentGear();
+        double tmpMaxGear = getMaxGears();
+        float tmpConsumptionPer100Km;
+        float tmpBurnedFuel;
+
+        //calculate consumption per 100km for current gear
+        tmpConsumptionPer100Km = (float) (getConsumptionPer100Km() * Math.pow(1.1, (tmpMaxGear - tmpCurrentGear)));
+        //calculate how much fuel was burned during current drive in current gear;
+        tmpBurnedFuel = (float) (( tmpConsumptionPer100Km * kms ) / 100);
+
+        setCurrentConsumption(tmpBurnedFuel);
     }
 
-    public Float getAverageFuelConsumption() {
-        return (float) 0.0;
-    }
+
 }

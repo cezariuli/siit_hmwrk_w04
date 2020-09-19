@@ -1,12 +1,10 @@
 package com.cezar.homework.w04;
 
-public class Logan extends Dacia{
+public class SKlasse extends MercedesBenz {
 
-
-
-    public Logan(Integer availableFuel, String chassisNumber) {
-        super(45, "Petrol",  5, (float) 5.0);
-        setTireSize(15);
+    public SKlasse (Integer availableFuel, String chassisNumber) {
+        super(70, "Diesel",  5, (float) 6.4);
+        setTireSize(17);
 
         //cannot have more fuel than the fuel tank capacity.
         if (availableFuel <= super.fuelTankSize) {
@@ -16,5 +14,4 @@ public class Logan extends Dacia{
 
         super.setChassisNumber(chassisNumber);
     }
-
 }
