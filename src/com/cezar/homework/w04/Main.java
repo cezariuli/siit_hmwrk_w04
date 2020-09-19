@@ -28,7 +28,18 @@ public class Main {
 
         System.out.println("Available fuel on Logan: " + availableFuel);
         System.out.println("Average consumption of Logan: " + fuelConsumedPer100Km);
-        
+
+/*      This part is not working and I was not able to figure it out why at the time of the homework submission
+
+        Vehicle vehicle = new VWGolf(30, "1987ddkshik");
+
+        vehicle.start();
+        vehicle.drive((float)1);
+        vehicle.stop();
+
+        Car car1 = (Car) vehicle;
+        float availableFuelCar1 = car1.getAvailableFuel();
+        float fuelConsumedPer100KmCar1 = car1.getAverageFuelConsumption();*/
 
     }
 }
